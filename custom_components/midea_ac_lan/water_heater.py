@@ -40,7 +40,7 @@ from .native_temperature import NativeTemperatureCompat
 
 _LOGGER = logging.getLogger(__name__)
 
-E2_TEMPERATURE_MAX = 75
+E2_TEMPERATURE_MAX = 80
 E2_TEMPERATURE_MIN = 30
 E3_TEMPERATURE_MAX = 65
 E3_TEMPERATURE_MIN = 35
