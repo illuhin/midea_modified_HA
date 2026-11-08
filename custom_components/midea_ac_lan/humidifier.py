@@ -79,6 +79,18 @@ class MideaHumidifier(MideaEntity, HumidifierEntity):
         """Midea Humidifier available modes."""
         return cast("list", self._device.modes)
 
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Midea Humidifier extra state attributes."""
+        attrs: dict[str, Any] = dict(super().extra_state_attributes or {})
+        # Water tank status reported by the device as attribute "tank".
+        # tank_full assumes the device reports 100 or more when the tank is full.
+        # Protocol source: see the midea-lua FD file linked in the PR.
+        tank = self._device.get_attribute("tank")
+        attrs["tank"] = tank
+        attrs["tank_full"] = isinstance(tank, (int, float)) and tank >= 100
+        return attrs
+
     def set_humidity(self, humidity: int) -> None:
         """Midea Humidifier set humidity."""
         self._device.set_attribute("target_humidity", humidity)
